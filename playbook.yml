@@ -1,0 +1,219 @@
+---
+- hosts: all
+  become: yes
+  # Overwrite them with --extra-vars='{"user": "ubuntu"}'
+  # http://docs.ansible.com/ansible/playbooks_variables.html
+  #
+  # Notes:
+  # 1. The default `ubuntu` user are groups like `sudo` to have some previledges.
+  #    If you want to use another user name, please be careful about it.
+  # 2. `developer` group is created to demostrate how to add a group with ansible.
+  #     The group is not used for any real task.
+  vars:
+    user: yunabe
+    group: developer
+
+  tasks:
+  - name: Ensure apt packages are installed
+    apt:
+      name: "{{ item }}"
+      force: yes
+      update_cache: yes
+      cache_valid_time: 86400
+    with_items:
+      # apptitude is required to execute apt: upgrade later.
+      # https://github.com/ansible/ansible/issues/16884#issuecomment-278138707
+      - aptitude
+      - clang
+      - emacs
+      - gcc
+      - git
+      - python-pip
+      - screen
+      - unzip
+      - zip
+      - zsh
+      - libzmq3-dev
+
+  - name: Update all packages to the latest version
+    apt: update_cache=yes cache_valid_time=86400 upgrade=safe
+
+  - name: autoclean unused apt packages.
+    apt: update_cache=yes cache_valid_time=86400 autoremove=true
+
+  # Run this before other pip modules.
+  # pip installed with apt-get is not up-to-date.
+  - name: Ensure pip is up-to-date.
+    pip: name=pip state=latest
+
+  # --no-cche-dir is required to avoid MemoryError.
+  # pip skips packages which were already installed even with --no-cache-dir option.
+  - name: Ensure popular ML python libraries are installed.
+    pip:
+      state: latest
+      name:
+      - jupyter
+      - matplotlib
+      - numpy
+      - pandas
+      - scikit-learn
+      - scipy
+      - tensorflow
+      - keras
+
+  # Install the latest version of docker on ubuntu.
+  # https://github.com/golang/go/wiki/Ubuntu
+  - name: Register Go apt-repository
+    apt_repository:
+      repo: ppa:gophers/archive
+      update_cache: yes
+  - name: Ensure Go 1.9 is installed
+    apt:
+      name: golang-1.9-go
+      force: yes
+      update_cache: yes
+      cache_valid_time: 86400
+
+  # Set up users and groups.
+  - name: Ensure group:{{ group }} exists
+    group: name={{ group }}
+
+  # http://docs.ansible.com/ansible/user_module.html
+  - name: Ensure user:{{ user }} exists
+    user:
+      # Why is "" necessary?
+      name: "{{ user }}"
+      # append is necessary because ubuntu needs to be in
+      # some default groups like sudo.
+      append: yes
+      # Remove default public password in Vagrant. Double-quotes around * are necessary.
+      shell: /bin/zsh
+      groups:
+      - "{{ group }}"
+
+  - name: Clone config git repository
+    become_user: "{{ user }}"
+    git:
+      repo: git@github.com:yunabe/linux-user-config.git
+      dest: /home/{{ user }}/config
+      accept_hostkey: yes
+
+  # Ansible version of config/setup.sh.
+  # TODO: Group these file modules as a role.
+  - name: Link .emacs file
+    file:
+      path: /home/{{ user }}/.emacs
+      src: /home/{{ user }}/config/_emacs
+      state: link
+      owner: "{{ user }}"
+      group: "{{ user }}"
+
+  - name: Link .zshrc file
+    file:
+      path: /home/{{ user }}/.zsh.d
+      state: directory
+      owner: "{{ user }}"
+      group: "{{ user }}"
+
+  - name: Make .zsh.d directory
+    file:
+      path: /home/{{ user }}/.zshrc
+      src: /home/{{ user }}/config/_zshrc
+      state: link
+      owner: "{{ user }}"
+      group: "{{ user }}"
+
+  - name: Link .screenrc file
+    file:
+      path: /home/{{ user }}/.screenrc
+      src: /home/{{ user }}/config/_screenrc
+      state: link
+      owner: "{{ user }}"
+      group: "{{ user }}"
+
+  - name: Link .gitconfig file
+    file:
+      path: /home/{{ user }}/.gitconfig
+      src: /home/{{ user }}/config/_gitconfig
+      state: link
+      owner: "{{ user }}"
+      group: "{{ user }}"
+
+  # Install emacs Cask
+  # http://cask.readthedocs.io/en/latest/guide/installation.html#manual-installation
+  # https://github.com/cask/cask/blob/master/go
+  - name: Clone emacs Cask repository
+    become_user: "{{ user }}"
+    git:
+      repo: https://github.com/cask/cask.git
+      dest: /home/{{ user }}/.cask
+      accept_hostkey: yes
+    register: git_cask
+  - name: Encure emacs Cask is up-to-date
+    become_user: "{{ user }}"
+    shell: /home/{{ user }}/.cask/bin/cask upgrade-cask
+    when: git_cask.changed
+
+  # Clone git repositories
+  - name: Clone codelab git repository
+    become_user: "{{ user }}"
+    git:
+      repo: git@github.com:yunabe/codelab.git
+      dest: /home/{{ user }}/src/codelab
+      accept_hostkey: yes
+
+  - name: Clone golang-codelab git repository
+    become_user: "{{ user }}"
+    git:
+      repo: git@github.com:yunabe/golang-codelab.git
+      dest: /home/{{ user }}/local/gocode/src/github.com/yunabe/golang-codelab
+      accept_hostkey: yes
+
+  - name: Clone gae-codelab git repository
+    become_user: "{{ user }}"
+    git:
+      repo: git@github.com:yunabe/gae-codelab.git
+      dest: /home/{{ user }}/local/gocode/src/github.com/yunabe/gae-codelab
+      accept_hostkey: yes
+
+  - name: Clone easycsv git repository
+    become_user: "{{ user }}"
+    git:
+      repo: git@github.com:yunabe/easycsv.git
+      dest: /home/{{ user }}/local/gocode/src/github.com/yunabe/easycsv
+      accept_hostkey: yes
+
+  - name: Clone lgo git repository
+    become_user: "{{ user }}"
+    git:
+      repo: git@github.com:yunabe/lgo.git
+      dest: /home/{{ user }}/local/gocode/src/github.com/yunabe/lgo
+      accept_hostkey: yes
+
+  - name: Clone pysh git repository
+    become_user: "{{ user }}"
+    git:
+      repo: git@github.com:yunabe/pysh.git
+      dest: /home/{{ user }}/src/pysh
+      accept_hostkey: yes
+
+  - name: Clone ansible_config git repository
+    become_user: "{{ user }}"
+    git:
+      repo: git@github.com:yunabe/ansible_config.git
+      dest: /home/{{ user }}/src/ansible_config
+      accept_hostkey: yes
+
+  - name: Clone jekylldoc git repository
+    become_user: "{{ user }}"
+    git:
+      repo: git@bitbucket.org:yunabe/sphinx-doc.git
+      dest: /home/{{ user }}/src/jekylldoc
+      accept_hostkey: yes
+
+  - name: Clone plain git repository
+    become_user: "{{ user }}"
+    git:
+      repo: git@bitbucket.org:yunabe/plain.git
+      dest: /home/{{ user }}/src/plain
+      accept_hostkey: yes

@@ -28,6 +28,7 @@
       - emacs
       - gcc
       - git
+      - mercurial
       - python-pip
       - screen
       - unzip
@@ -73,6 +74,32 @@
       force: yes
       update_cache: yes
       cache_valid_time: 86400
+
+  # Install Google Cloud SDK
+  # https://cloud.google.com/sdk/downloads?hl=en#apt-get
+  - name: Install Cloud SDK GPG key
+    apt_key:
+      url: "https://packages.cloud.google.com/apt/doc/apt-key.gpg"
+      id: A7317B0F
+    tags:
+      now
+  - name: Register Cloud SDK apt-repository
+    apt_repository:
+      repo: deb http://packages.cloud.google.com/apt cloud-sdk-{{ansible_lsb.codename}} main
+      update_cache: yes
+    tags:
+      now
+  - name: Install Google Cloud SDK
+    apt:
+      name: "{{ item }}"
+      force: yes
+      update_cache: yes
+      cache_valid_time: 86400
+    with_items:
+      - google-cloud-sdk
+      - google-cloud-sdk-app-engine-go
+    tags:
+      - now
 
   # Set up users and groups.
   - name: Ensure group:{{ group }} exists

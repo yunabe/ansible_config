@@ -62,7 +62,7 @@
       - tensorflow
       - keras
 
-  # Install the latest version of docker on ubuntu.
+  # Install the latest version of Go.
   # https://github.com/golang/go/wiki/Ubuntu
   - name: Register Go apt-repository
     apt_repository:
@@ -75,20 +75,43 @@
       update_cache: yes
       cache_valid_time: 86400
 
+  # Install the latest Node.js
+  # https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
+  - name: Install NodeSource GPG key
+    apt_key:
+      url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+      id: AA01DA2C
+  - name: Register NodeSource apt-repository
+    apt_repository:
+      repo: deb https://deb.nodesource.com/node_9.x {{ansible_lsb.codename}} main
+      update_cache: yes
+  - name: Register NodeSource deb-src apt-repository
+    apt_repository:
+      repo: deb-src https://deb.nodesource.com/node_9.x {{ansible_lsb.codename}} main
+      update_cache: yes
+  - name: Install the latest Node.js
+    apt:
+      name: nodejs
+      force: yes
+      update_cache: yes
+      cache_valid_time: 86400
+
+  - name: Install global npm packages
+    npm:
+      name: create-react-app
+      global: yes
+      state: latest
+
   # Install Google Cloud SDK
   # https://cloud.google.com/sdk/downloads?hl=en#apt-get
   - name: Install Cloud SDK GPG key
     apt_key:
       url: "https://packages.cloud.google.com/apt/doc/apt-key.gpg"
       id: A7317B0F
-    tags:
-      now
   - name: Register Cloud SDK apt-repository
     apt_repository:
       repo: deb http://packages.cloud.google.com/apt cloud-sdk-{{ansible_lsb.codename}} main
       update_cache: yes
-    tags:
-      now
   - name: Install Google Cloud SDK
     apt:
       name: "{{ item }}"
@@ -98,8 +121,6 @@
     with_items:
       - google-cloud-sdk
       - google-cloud-sdk-app-engine-go
-    tags:
-      - now
 
   # Set up users and groups.
   - name: Ensure group:{{ group }} exists
@@ -124,6 +145,8 @@
       repo: git@github.com:yunabe/linux-user-config.git
       dest: /home/{{ user }}/config
       accept_hostkey: yes
+    tags:
+      git
 
   # Ansible version of config/setup.sh.
   # TODO: Group these file modules as a role.
@@ -188,6 +211,8 @@
       repo: git@github.com:yunabe/codelab.git
       dest: /home/{{ user }}/src/codelab
       accept_hostkey: yes
+    tags:
+      git
 
   - name: Clone golang-codelab git repository
     become_user: "{{ user }}"
@@ -195,6 +220,8 @@
       repo: git@github.com:yunabe/golang-codelab.git
       dest: /home/{{ user }}/local/gocode/src/github.com/yunabe/golang-codelab
       accept_hostkey: yes
+    tags:
+      git
 
   - name: Clone gae-codelab git repository
     become_user: "{{ user }}"
@@ -202,6 +229,8 @@
       repo: git@github.com:yunabe/gae-codelab.git
       dest: /home/{{ user }}/local/gocode/src/github.com/yunabe/gae-codelab
       accept_hostkey: yes
+    tags:
+      git
 
   - name: Clone easycsv git repository
     become_user: "{{ user }}"
@@ -209,6 +238,8 @@
       repo: git@github.com:yunabe/easycsv.git
       dest: /home/{{ user }}/local/gocode/src/github.com/yunabe/easycsv
       accept_hostkey: yes
+    tags:
+      git
 
   - name: Clone lgo git repository
     become_user: "{{ user }}"
@@ -216,6 +247,8 @@
       repo: git@github.com:yunabe/lgo.git
       dest: /home/{{ user }}/local/gocode/src/github.com/yunabe/lgo
       accept_hostkey: yes
+    tags:
+      git
 
   - name: Clone pysh git repository
     become_user: "{{ user }}"
@@ -223,6 +256,8 @@
       repo: git@github.com:yunabe/pysh.git
       dest: /home/{{ user }}/src/pysh
       accept_hostkey: yes
+    tags:
+      git
 
   - name: Clone ansible_config git repository
     become_user: "{{ user }}"
@@ -230,6 +265,8 @@
       repo: git@github.com:yunabe/ansible_config.git
       dest: /home/{{ user }}/src/ansible_config
       accept_hostkey: yes
+    tags:
+      git
 
   - name: Clone jekylldoc git repository
     become_user: "{{ user }}"
@@ -237,6 +274,8 @@
       repo: git@bitbucket.org:yunabe/sphinx-doc.git
       dest: /home/{{ user }}/src/jekylldoc
       accept_hostkey: yes
+    tags:
+      git
 
   - name: Clone plain git repository
     become_user: "{{ user }}"
@@ -244,3 +283,5 @@
       repo: git@bitbucket.org:yunabe/plain.git
       dest: /home/{{ user }}/src/plain
       accept_hostkey: yes
+    tags:
+      git

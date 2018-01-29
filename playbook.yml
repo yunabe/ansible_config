@@ -35,6 +35,15 @@
       - zip
       - zsh
       - libzmq3-dev
+      # ruby-dev is required to install jekyll.
+      - ruby-dev
+
+  # Install jekyll to /home/user/.gem
+  - name: Install jekyll
+    become_user: "{{ user }}"
+    gem:
+      name: jekyll
+      state: latest
 
   - name: Update all packages to the latest version
     apt: update_cache=yes cache_valid_time=86400 upgrade=safe
@@ -146,7 +155,7 @@
       dest: /home/{{ user }}/config
       accept_hostkey: yes
     tags:
-      git
+      - git
 
   # Ansible version of config/setup.sh.
   # TODO: Group these file modules as a role.
@@ -212,7 +221,7 @@
       dest: /home/{{ user }}/src/codelab
       accept_hostkey: yes
     tags:
-      git
+      - git
 
   - name: Clone golang-codelab git repository
     become_user: "{{ user }}"
@@ -221,7 +230,7 @@
       dest: /home/{{ user }}/local/gocode/src/github.com/yunabe/golang-codelab
       accept_hostkey: yes
     tags:
-      git
+      - git
 
   - name: Clone gae-codelab git repository
     become_user: "{{ user }}"
@@ -230,7 +239,7 @@
       dest: /home/{{ user }}/local/gocode/src/github.com/yunabe/gae-codelab
       accept_hostkey: yes
     tags:
-      git
+      - git
 
   - name: Clone easycsv git repository
     become_user: "{{ user }}"
@@ -239,7 +248,7 @@
       dest: /home/{{ user }}/local/gocode/src/github.com/yunabe/easycsv
       accept_hostkey: yes
     tags:
-      git
+      - git
 
   - name: Clone lgo git repository
     become_user: "{{ user }}"
@@ -248,7 +257,7 @@
       dest: /home/{{ user }}/local/gocode/src/github.com/yunabe/lgo
       accept_hostkey: yes
     tags:
-      git
+      - git
 
   - name: Clone pysh git repository
     become_user: "{{ user }}"
@@ -266,7 +275,16 @@
       dest: /home/{{ user }}/src/ansible_config
       accept_hostkey: yes
     tags:
-      git
+      - git
+
+  - name: Clone yunabe.github.io git repository
+    become_user: "{{ user }}"
+    git:
+      repo: git@github.com:yunabe/yunabe.github.io.git
+      dest: /home/{{ user }}/src/yunabe.github.io
+      accept_hostkey: yes
+    tags:
+      - git
 
   - name: Clone jekylldoc git repository
     become_user: "{{ user }}"
@@ -275,7 +293,7 @@
       dest: /home/{{ user }}/src/jekylldoc
       accept_hostkey: yes
     tags:
-      git
+      - git
 
   - name: Clone plain git repository
     become_user: "{{ user }}"
@@ -284,4 +302,4 @@
       dest: /home/{{ user }}/src/plain
       accept_hostkey: yes
     tags:
-      git
+      - git

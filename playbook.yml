@@ -28,6 +28,7 @@
       - emacs
       - gcc
       - git
+      - maven
       - mercurial
       - python-pip
       - screen
@@ -71,6 +72,28 @@
       - tensorflow
       - keras
 
+  # Install bazel
+  # https://docs.bazel.build/versions/master/install-ubuntu.html#install-on-ubuntu
+  - name: Install Bazel APT Key
+    apt_key:
+      url: "https://bazel.build/bazel-release.pub.gpg"
+    tags:
+      - now
+  - name: Register Bazel apt-repository
+    apt_repository:
+      repo: deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8
+      update_cache: yes
+    tags:
+      - now
+  - name: Install Bazel
+    apt:
+      name: bazel
+      force: yes
+      update_cache: yes
+      cache_valid_time: 3600
+    tags:
+      - now
+
   # Install the latest version of Go.
   # https://github.com/golang/go/wiki/Ubuntu
   - name: Register Go apt-repository
@@ -105,18 +128,41 @@
       update_cache: yes
       cache_valid_time: 86400
 
-  - name: Install global npm packages
+  - name: Install create-react-app
     npm:
       name: create-react-app
       global: yes
       state: latest
+
+  - name: Install typescript
+    npm:
+      name: typescript
+      global: yes
+      state: latest
+
+  # Install .Net
+  # https://www.microsoft.com/net/learn/get-started/linux/ubuntu16-04
+  - name: Install Microsoft APT Key
+    apt_key:
+      url: "https://packages.microsoft.com/keys/microsoft.asc"
+      id: BE1229CF
+  - name: Register .NET SDK apt-repository
+    apt_repository:
+      repo: deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-{{ansible_lsb.codename}}-prod {{ansible_lsb.codename}} main
+      update_cache: yes
+  - name: Install .NET SDK
+    apt:
+      name: dotnet-sdk-2.1.4
+      force: yes
+      update_cache: yes
+      cache_valid_time: 86400
 
   # Install Google Cloud SDK
   # https://cloud.google.com/sdk/downloads?hl=en#apt-get
   - name: Install Cloud SDK GPG key
     apt_key:
       url: "https://packages.cloud.google.com/apt/doc/apt-key.gpg"
-      id: A7317B0F
+      id: BA07F4FB
   - name: Register Cloud SDK apt-repository
     apt_repository:
       repo: deb http://packages.cloud.google.com/apt cloud-sdk-{{ansible_lsb.codename}} main

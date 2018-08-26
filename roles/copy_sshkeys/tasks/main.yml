@@ -1,0 +1,17 @@
+- name: Create .ssh directory
+  file:
+    path: /home/{{ user }}/.ssh
+    state: directory
+    mode: 0700
+
+- name: Copy a ssh private key for devenv
+  copy:
+    src: ~/.ssh/devenv_id_rsa
+    dest: /home/{{ user }}/.ssh/id_rsa
+    mode: 0600
+
+- name: Copy a ssh public key for devenv
+  copy:
+    src: ~/.ssh/devenv_id_rsa.pub
+    dest: /home/{{ user }}/.ssh/id_rsa.pub
+    mode: 0644

@@ -1,148 +1,28 @@
 ---
+# Overwrite them with --extra-vars='{"user": "ubuntu"}'
+# http://docs.ansible.com/ansible/playbooks_variables.html
+#
+# Notes:
+# 1. The default `ubuntu` user are groups like `sudo` to have some previledges.
+#    If you want to use another user name, please be careful about it.
+# 2. `developer` group is created to demostrate how to add a group with ansible.
+#     The group is not used for any real task.
 - hosts: all
-  # Overwrite them with --extra-vars='{"user": "ubuntu"}'
-  # http://docs.ansible.com/ansible/playbooks_variables.html
-  #
-  # Notes:
-  # 1. The default `ubuntu` user are groups like `sudo` to have some previledges.
-  #    If you want to use another user name, please be careful about it.
-  # 2. `developer` group is created to demostrate how to add a group with ansible.
-  #     The group is not used for any real task.
   vars:
     user: yunabe
+  roles:
+    - apt_common
+    - dotfiles
+    - copy_sshkeys
+    - python
+    - apt_extended
+    - apt_desktop
+    - clone_git_repositories
 
+- hosts: all
   tasks:
-  - name: Install apt packages
-    apt:
-      name: "{{ item }}"
-      force: yes
-      update_cache: yes
-      cache_valid_time: 86400
-    with_items:
-      # apptitude is required to execute apt: upgrade later.
-      # https://github.com/ansible/ansible/issues/16884#issuecomment-278138707
-      - aptitude
-      - clang
-      - emacs
-      - gcc
-      - git
-      - maven
-      - mercurial
-      - python-pip
-      - screen
-      - unzip
-      - zip
-      - zsh
-      - libzmq3-dev
-      # ruby-dev is required to install jekyll.
-      - ruby-dev
-    become: yes
-
-  - name: Update all packages to the latest version
-    apt: update_cache=yes cache_valid_time=86400 upgrade=safe
-    become: yes
-
-  - name: autoclean unused apt packages.
-    apt: update_cache=yes cache_valid_time=86400 autoremove=true
-    become: yes
-
-  # http://docs.ansible.com/ansible/user_module.html
-  - name: Ensure user:{{ user }} exists and set /bin/zsh as a log-in shell.
-    user:
-      # Why is "" necessary?
-      name: "{{user}}"
-      # append is necessary because ubuntu needs to be in
-      # some default groups like sudo.
-      append: yes
-      # Remove default public password in Vagrant. Double-quotes around * are necessary.
-      shell: /bin/zsh
-
-  - name: Clone config git repository
-    git:
-      repo: git@github.com:yunabe/linux-user-config.git
-      dest: /home/{{ user }}/config
-      accept_hostkey: yes
-    tags:
-      - git
-
-  # Ansible version of config/setup.sh.
-  # TODO: Group these file modules as a role.
-  - name: Link .emacs file
-    file:
-      path: /home/{{ user }}/.emacs
-      src: /home/{{ user }}/config/_emacs
-      state: link
-      owner: "{{ user }}"
-      group: "{{ user }}"
-
-  - name: Link .zshrc file
-    file:
-      path: /home/{{ user }}/.zsh.d
-      state: directory
-      owner: "{{ user }}"
-      group: "{{ user }}"
-
-  - name: Make .zsh.d directory
-    file:
-      path: /home/{{ user }}/.zshrc
-      src: /home/{{ user }}/config/_zshrc
-      state: link
-      owner: "{{ user }}"
-      group: "{{ user }}"
-
-  - name: Link .screenrc file
-    file:
-      path: /home/{{ user }}/.screenrc
-      src: /home/{{ user }}/config/_screenrc
-      state: link
-      owner: "{{ user }}"
-      group: "{{ user }}"
-
-  - name: Link .gitconfig file
-    file:
-      path: /home/{{ user }}/.gitconfig
-      src: /home/{{ user }}/config/_gitconfig
-      state: link
-      owner: "{{ user }}"
-      group: "{{ user }}"
-
-
-  # Run this before other pip modules.
-  # pip installed with apt-get is not up-to-date.
-  - name: Ensure pip is up-to-date.
-    pip: name=pip state=latest
-
-  - name: Install popular ML Python libraries.
-    pip:
-      state: latest
-      name:
-      - jupyter
-      - matplotlib
-      - numpy
-      - pandas
-      - scikit-learn
-      - scipy
-      - tensorflow
-      - keras
-
-  # Install jekyll to /home/user/.gem
-  - name: Install jekyll
-    become_user: "{{ user }}"
+  - name: Install jekyll to $HOME/.gem
     gem:
       name: jekyll
       state: latest
 
-  # Install the latest version of Go.
-  # https://github.com/golang/go/wiki/Ubuntu
-  - name: Register Go apt-repository
-    apt_repository:
-      repo: ppa:gophers/archive
-      update_cache: yes
-    become: yes
-  - name: Install Go 1.9
-    apt:
-      name: golang-1.9-go
-      force: yes
-      update_cache: yes
-      cache_valid_time: 86400
-    become: yes

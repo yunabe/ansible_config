@@ -1,0 +1,34 @@
+# Install the latest version of Go.
+# https://github.com/golang/go/wiki/Ubuntu
+- name: Register Go apt-repository
+  apt_repository:
+    repo: ppa:gophers/archive
+    update_cache: yes
+  become: yes
+- name: Install Go 1.9
+  apt:
+    name: golang-1.9-go
+    force: yes
+    update_cache: yes
+    cache_valid_time: 86400
+  become: yes
+
+# Install the latest version of docker on ubuntu.
+# https://docs.docker.com/engine/installation/linux/ubuntu/
+- name: Install Docker GPG key
+  become: yes
+  apt_key:
+    url: "https://download.docker.com/linux/ubuntu/gpg"
+    id: 0EBFCD88
+- name: Register docker apt-repository
+  become: yes
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable
+    update_cache: yes
+- name: Install docker-ce
+  become: yes
+  apt:
+    name: docker-ce
+    force: yes
+    update_cache: yes
+    cache_valid_time: 3600

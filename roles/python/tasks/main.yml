@@ -1,0 +1,19 @@
+# Run this before other pip modules.
+# pip installed with apt-get is not up-to-date.
+- name: Install up-to-date pip
+  become: yes
+  pip: name=pip state=latest
+
+- name: Install Python popular ML libraries.
+  become: yes
+  pip:
+    state: latest
+    name:
+    - jupyter
+    - matplotlib
+    - numpy
+    - pandas
+    - scikit-learn
+    - scipy
+    - tensorflow
+    - keras

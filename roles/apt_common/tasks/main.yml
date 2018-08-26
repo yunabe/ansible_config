@@ -1,0 +1,33 @@
+- name: Install apt packages
+  become: yes
+  apt:
+    name: "{{ item }}"
+    force: yes
+    update_cache: yes
+    cache_valid_time: 86400
+  with_items:
+    # apptitude is required to execute apt: upgrade later.
+    # https://github.com/ansible/ansible/issues/16884#issuecomment-278138707
+    - aptitude
+    - clang
+    - emacs
+    - gcc
+    - git
+    - maven
+    - mercurial
+    - python-pip
+    - screen
+    - unzip
+    - zip
+    - zsh
+    - libzmq3-dev
+    # ruby-dev is required to install jekyll.
+    - ruby-dev
+
+- name: Update all packages to the latest version
+  apt: update_cache=yes cache_valid_time=86400 upgrade=safe
+  become: yes
+
+- name: autoclean unused apt packages.
+  apt: update_cache=yes cache_valid_time=86400 autoremove=true
+  become: yes

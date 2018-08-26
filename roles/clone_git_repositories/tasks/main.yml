@@ -1,0 +1,79 @@
+- name: Clone codelab git repository
+  git:
+    repo: git@github.com:yunabe/codelab.git
+    dest: /home/{{ user }}/src/codelab
+    accept_hostkey: yes
+  tags:
+    - git
+
+- name: Clone golang-codelab git repository
+  git:
+    repo: git@github.com:yunabe/golang-codelab.git
+    dest: /home/{{ user }}/local/gocode/src/github.com/yunabe/golang-codelab
+    accept_hostkey: yes
+  tags:
+     - git
+
+- name: Clone gae-codelab git repository
+  git:
+    repo: git@github.com:yunabe/gae-codelab.git
+    dest: /home/{{ user }}/local/gocode/src/github.com/yunabe/gae-codelab
+    accept_hostkey: yes
+  tags:
+    - git
+
+- name: Clone easycsv git repository
+  git:
+    repo: git@github.com:yunabe/easycsv.git
+    dest: /home/{{ user }}/local/gocode/src/github.com/yunabe/easycsv
+    accept_hostkey: yes
+  tags:
+    - git
+
+- name: Clone lgo git repository
+  git:
+    repo: git@github.com:yunabe/lgo.git
+    dest: /home/{{ user }}/local/gocode/src/github.com/yunabe/lgo
+    accept_hostkey: yes
+  tags:
+    - git
+
+- name: Clone pysh git repository
+  git:
+    repo: git@github.com:yunabe/pysh.git
+    dest: /home/{{ user }}/src/pysh
+    accept_hostkey: yes
+  tags:
+    git
+
+- name: Clone ansible_config git repository
+  git:
+    repo: git@github.com:yunabe/ansible_config.git
+    dest: /home/{{ user }}/src/ansible_config
+    accept_hostkey: yes
+  tags:
+    - git
+
+- name: Clone yunabe.github.io git repository
+  git:
+    repo: git@github.com:yunabe/yunabe.github.io.git
+    dest: /home/{{ user }}/src/yunabe.github.io
+    accept_hostkey: yes
+  tags:
+    - git
+
+- name: Clone jekylldoc git repository
+  git:
+    repo: git@bitbucket.org:yunabe/sphinx-doc.git
+    dest: /home/{{ user }}/src/jekylldoc
+    accept_hostkey: yes
+  tags:
+    - git
+
+- name: Clone plain git repository
+  git:
+    repo: git@bitbucket.org:yunabe/plain.git
+    dest: /home/{{ user }}/src/plain
+    accept_hostkey: yes
+  tags:
+    - git

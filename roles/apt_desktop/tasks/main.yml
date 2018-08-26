@@ -1,0 +1,30 @@
+- name: Install Google APT Key
+  become: yes
+  apt_key:
+    url: "https://dl-ssl.google.com/linux/linux_signing_key.pub"
+    id: D38B4796
+- name: Register Google apt-repository
+  become: yes
+  apt_repository:
+    repo: deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
+    update_cache: yes
+- name: Install Microsoft APT Key
+  become: yes
+  apt_key:
+    url: "https://packages.microsoft.com/keys/microsoft.asc"
+    id: BE1229CF
+- name: Register VSCode apt-repository
+  become: yes
+  apt_repository:
+    repo: deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main
+    update_cache: yes
+- name: Install Chrome, VSCode
+  become: yes
+  apt:
+    name: "{{ item }}"
+    force: yes
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - code
+    - google-chrome-stable

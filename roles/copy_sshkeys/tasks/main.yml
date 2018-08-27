@@ -1,17 +1,19 @@
 - name: Create .ssh directory
   file:
-    path: /home/{{ user }}/.ssh
+    path: ~/.ssh
     state: directory
     mode: 0700
-
+# Although copy_module doc says dest is "Remote absolute path",
+# `~/` looks working in my environment.
+# https://docs.ansible.com/ansible/latest/modules/copy_module.html
+# TODO(yunabe): Understand why it works.
 - name: Copy a ssh private key for devenv
   copy:
     src: ~/.ssh/devenv_id_rsa
-    dest: /home/{{ user }}/.ssh/id_rsa
+    dest: ~/.ssh/id_rsa
     mode: 0600
-
 - name: Copy a ssh public key for devenv
   copy:
     src: ~/.ssh/devenv_id_rsa.pub
-    dest: /home/{{ user }}/.ssh/id_rsa.pub
+    dest: ~/.ssh/id_rsa.pub
     mode: 0644

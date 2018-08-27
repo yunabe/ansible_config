@@ -3,41 +3,42 @@
     name: "{{ user }}"
     shell: /bin/zsh
 
+# As far as I know, `~/` in the following rules can be ommited.
+# I declared `~/` just to make the intention clearer.
 - name: Clone config git repository
   git:
     repo: git@github.com:yunabe/linux-user-config.git
-    dest: /home/{{ user }}/config
+    dest: "~/config"
     accept_hostkey: yes
   tags:
     - git
 
 # Ansible version of config/setup.sh.
-# TODO: Group these file modules as a role.
 - name: Link .emacs file
   file:
-    path: /home/{{ user }}/.emacs
-    src: /home/{{ user }}/config/_emacs
+    path: "~/.emacs"
+    src: "config/_emacs"
     state: link
 
 - name: Link .zshrc file
   file:
-    path: /home/{{ user }}/.zsh.d
+    path: "~/.zsh.d"
     state: directory
 
 - name: Make .zsh.d directory
   file:
-    path: /home/{{ user }}/.zshrc
-    src: /home/{{ user }}/config/_zshrc
+    path: "~/.zshrc"
+    src: "config/_zshrc"
     state: link
 
 - name: Link .screenrc file
   file:
-    path: /home/{{ user }}/.screenrc
-    src: /home/{{ user }}/config/_screenrc
+    path: "~/.screenrc"
+    src: "config/_screenrc"
     state: link
 
 - name: Link .gitconfig file
   file:
-    path: /home/{{ user }}/.gitconfig
-    src: /home/{{ user }}/config/_gitconfig
+    path: "~/.gitconfig"
+    src: "config/_gitconfig"
     state: link

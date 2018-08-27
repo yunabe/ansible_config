@@ -10,6 +10,7 @@
     # https://github.com/ansible/ansible/issues/16884#issuecomment-278138707
     - aptitude
     - clang
+    - curl
     - emacs
     - gcc
     - git

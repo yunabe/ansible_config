@@ -36,3 +36,17 @@ key: {{ var }} another_string
 References:
 - https://docs.ansible.com/ansible/2.5/user_guide/playbooks_variables.html#hey-wait-a-yaml-gotcha
 - https://docs.ansible.com/ansible/2.5/reference_appendices/YAMLSyntax.html#gotchas
+
+## apt_key.id param
+To get the value oto set `apt_key.id` param, install a key with `sudo apt-key add` then
+find the key info with `apt-key list`.
+
+```
+pub   rsa4096 2017-02-22 [SCEA]
+      9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88
+uid           [ unknown] Docker Release (CE deb) <docker@docker.com>
+sub   rsa4096 2017-02-22 [S]
+```
+
+Extract the last few sections of `pub` and remove white spaces to create a value of `apt_key.id` param
+(e.g. `"8D81803C0EBFCD88"`, `"0EBFCD88"`).

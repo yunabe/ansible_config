@@ -41,7 +41,7 @@
 - name: Clone lgo_extension git repository
   git:
     repo: git@github.com:yunabe/lgo_extension.git
-    dest: ~/local/gocode/src/github.com/yunabe/lgo_extension
+    dest: ~/src/lgo_extension
     accept_hostkey: yes
   tags:
     - git

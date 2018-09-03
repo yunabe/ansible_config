@@ -15,6 +15,13 @@ Notes:
 ansible-playbook -i localhost playbook.yml -K -c local
 ```
 
+# Not covered with these public Ansibe playbooks
+### User registration
+- npm
+  - `npm adduser`
+- docker
+  - [`docker login`](https://docs.docker.com/engine/reference/commandline/login/)
+
 # Misc
 ## Skip git repository rules
 If `ansible-playbook` failed because some git repositories have pending repositories,

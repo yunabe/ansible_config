@@ -3,8 +3,17 @@
   vars:
     user: yunabe
   tasks:
+
+  # By default, vars/passwd_secret.yml does not exist and vars/passwd_default.yml
+  # set '*' to /etc/shadow and disable password-login.
+  # To enable password, create vars/passwd_secret.yml and provide a hashed password.
+  # To create a hashed password, follow the instruction and use passlib.
+  # https://docs.ansible.com/ansible/latest/reference_appendices/faq.html#how-do-i-generate-crypted-passwords-for-the-user-module
   - name: Include passwd.yml
-    include_vars: vars/passwd.yml
+    include_vars: "{{ item }}"
+    with_first_found:
+      - vars/passwd_secret.yml
+      - vars/passwd_default.yml
   - name: Set user password
     user:
       name: "{{ user }}"

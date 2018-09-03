@@ -1,5 +1,0 @@
----
-# Follow the instruction and provide the hashed log-in passswd if necessary with passlib.
-# https://docs.ansible.com/ansible/latest/reference_appendices/faq.html#how-do-i-generate-crypted-passwords-for-the-user-module
-# Note: * must be quoted.
-passwd: '*'

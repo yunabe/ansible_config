@@ -103,5 +103,5 @@ ENV/
 # ansible
 *.retry
 
-# passwd file
-vars/passwd.yml
+# secret files
+*secret*

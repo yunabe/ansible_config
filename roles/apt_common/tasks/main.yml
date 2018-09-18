@@ -18,6 +18,7 @@
     - mercurial
     - python-pip
     - screen
+    - subversion
     - unzip
     - zip
     - zsh

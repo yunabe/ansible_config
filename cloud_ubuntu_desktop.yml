@@ -19,3 +19,9 @@
       name: "{{ user }}"
       password: "{{ passwd }}"
     become: yes
+
+- hosts: all
+  vars:
+    user: yunabe
+  roles:
+    - chrome_remote_desktop

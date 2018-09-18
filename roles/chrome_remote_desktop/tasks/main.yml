@@ -1,0 +1,41 @@
+- name: Install necessary packages
+  become: yes
+  apt:
+    name: "{{ item }}"
+    force: yes
+    update_cache: yes
+    cache_valid_time: 86400
+  with_items:
+    - cinnamon-desktop-environment
+    - dbus-x11
+
+- name: Add {{ user }} to chrome-remote-desktop group
+  become: yes
+  user:
+    name: "{{ user }}"
+    append: yes
+    groups: chrome-remote-desktop
+
+- name: Check if screensaver lock-enabled is false
+  shell: gsettings get org.cinnamon.desktop.screensaver lock-enabled
+  register: screensaver_lock_enabled
+  changed_when: false
+
+# - name: Dump screensaver_lock_enabled
+#   debug:
+#     var: screensaver_lock_enabled
+
+# Don't forget gbus-launch.
+# https://stackoverflow.com/questions/30256153/gsettings-changes-are-not-working-over-ssh
+- name: Disable screensaver lock-enabled.
+  shell: dbus-launch gsettings set org.cinnamon.desktop.screensaver lock-enabled false
+  when: screensaver_lock_enabled.stdout != "false"
+
+- name: Check session idle-delay is off
+  shell: gsettings get org.cinnamon.desktop.session idle-delay
+  register: session_idle_delay
+  changed_when: false
+
+- name: Disable session idle-delay
+  shell: dbus-launch gsettings set org.cinnamon.desktop.session idle-delay "uint32 0"
+  when: session_idle_delay.stdout != "uint32 0"

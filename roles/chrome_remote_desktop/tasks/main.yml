@@ -7,7 +7,13 @@
     cache_valid_time: 86400
   with_items:
     - cinnamon-desktop-environment
+    - gdebi-core
     - dbus-x11
+
+- name: Create chrome-remote-desktop group
+  become: yes
+  group:
+    name: chrome-remote-desktop
 
 - name: Add {{ user }} to chrome-remote-desktop group
   become: yes
@@ -39,3 +45,15 @@
 - name: Disable session idle-delay
   shell: dbus-launch gsettings set org.cinnamon.desktop.session idle-delay "uint32 0"
   when: session_idle_delay.stdout != "uint32 0"
+
+# TODO: Detect the update of chrome-remote-desktop_current_amd64.deb.
+- name: Check if chrome-remote-desktop is installed
+  shell: dpkg-query -l chrome-remote-desktop
+  changed_when: false
+  ignore_errors: yes
+  register: crd_installed
+
+- name: Install chrome-remote-desktop
+  become: yes
+  shell: curl https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb --output crd_amd64.deb && gdebi -q -n crd_amd64.deb && rm -f crd_amd64.deb
+  when: crd_installed.rc != 0

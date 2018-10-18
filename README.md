@@ -16,11 +16,26 @@ ansible-playbook -i localhost playbook.yml -K -c local
 ```
 
 # Not covered with these public Ansibe playbooks
-### User registration
+## User registration
 - npm
   - `npm adduser`
 - docker
   - [`docker login`](https://docs.docker.com/engine/reference/commandline/login/)
+
+## Enable Chrome Remote Desktop
+Go to [this page on google.com](https://remotedesktop.google.com/headless) and get the command to enable CRD.
+I found the page in [this post](https://groups.google.com/d/msg/gce-discussion/tN9oZs8xWps/b2PtOBTeAQAJ).
+I couldn't find any official information from Google. But it's hosted on google.com.
+
+```shell
+/opt/google/chrome-remote-desktop/start-host --code="abcdefg" --redirect-url="https://remotedesktop.google.com/_/oauthredirect" --name=
+```
+
+I think this command restart CRD host automatically. But in case you can not see the new server in CRD client, try
+
+```shell
+sudo service chrome-remote-desktop restart
+```
 
 # Misc
 ## Skip git repository rules

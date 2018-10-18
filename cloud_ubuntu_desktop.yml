@@ -24,4 +24,11 @@
   vars:
     user: yunabe
   roles:
+    - apt_common
     - chrome_remote_desktop
+    - copy_sshkeys
+    - dotfiles
+    - python
+    - apt_extended
+    - apt_desktop
+    - clone_git_repositories

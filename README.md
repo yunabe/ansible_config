@@ -1,5 +1,5 @@
 # ansible_config
-# Ubuntu Desktop on Parallels for Mac
+## Ubuntu Desktop on Parallels for Mac
 ```shell
 ansible-playbook -i 192.168.64.1, --ask-pass --ask-become-pass
 ```
@@ -10,7 +10,12 @@ Notes:
   and write `192.168.64.5 ansible_become_pass=passwd` to the file.
   Then, pass the file with `-i` flag.
 
-# Chromebook (crouton)
+## Ubuntu instances on AWS/GCE
+```shell
+ansible-playbook cloud_ubuntu_desktop.yml -i 110.111.112.113,
+```
+
+## Chromebook (crouton)
 ```shell
 ansible-playbook -i localhost playbook.yml -K -c local
 ```

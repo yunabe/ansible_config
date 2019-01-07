@@ -44,3 +44,9 @@
     path: "~/.gitconfig"
     src: "config/_gitconfig"
     state: link
+
+- name: Link Cask file
+  file:
+    path: "~/.emacs.d/Cask"
+    src: "../config/Cask"
+    state: link

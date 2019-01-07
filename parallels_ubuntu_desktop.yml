@@ -12,8 +12,8 @@
     user: yunabe
   roles:
     - apt_common
-    - dotfiles
     - copy_sshkeys
+    - dotfiles
     - python
     - apt_extended
     - apt_desktop

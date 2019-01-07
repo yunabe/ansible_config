@@ -1,7 +1,9 @@
+# For some reason, this requires root permission.
 - name: Use /bin/zsh as a log-in shell.
   user:
     name: "{{ user }}"
     shell: /bin/zsh
+  become: yes
 
 # As far as I know, `~/` in the following rules can be ommited.
 # I declared `~/` just to make the intention clearer.

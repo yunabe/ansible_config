@@ -1,7 +1,8 @@
 # ansible_config
+
 # Ubuntu Desktop on Parallels for Mac
 ```shell
-ansible-playbook -i 192.168.64.1, --ask-pass --ask-become-pass
+ansible-playbook -i 192.168.64.1, parallels_ubuntu_desktop.yml --ask-pass --ask-become-pass
 ```
 
 Notes:

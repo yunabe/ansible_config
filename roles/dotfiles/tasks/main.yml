@@ -50,3 +50,9 @@
     path: "~/.emacs.d/Cask"
     src: "../config/Cask"
     state: link
+
+- name: Clone Cask repository
+  git:
+    repo: https://github.com/cask/cask.git
+    dest: ~/.cask
+    accept_hostkey: yes

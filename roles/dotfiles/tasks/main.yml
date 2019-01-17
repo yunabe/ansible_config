@@ -45,6 +45,12 @@
     src: "config/_gitconfig"
     state: link
 
+- name: Link .npmrc file
+  file:
+    path: "~/.npmrc"
+    src: "../config/_npmrc"
+    state: link
+
 - name: Link Cask file
   file:
     path: "~/.emacs.d/Cask"

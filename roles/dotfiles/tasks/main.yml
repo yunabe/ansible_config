@@ -48,7 +48,7 @@
 - name: Link .npmrc file
   file:
     path: "~/.npmrc"
-    src: "../config/_npmrc"
+    src: "~/config/_npmrc"
     state: link
 
 - name: Link Cask file

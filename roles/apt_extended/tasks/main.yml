@@ -64,3 +64,23 @@
     force: yes
     update_cache: yes
     cache_valid_time: 86400
+
+# Install the latest yarn
+# https://yarnpkg.com/en/docs/install#debian-stable
+- name: Install Yarn GPG key
+  become: yes
+  apt_key:
+    url: "https://dl.yarnpkg.com/debian/pubkey.gpg"
+    id: 86E50310
+- name: Register yarn apt-repository
+  become: yes
+  apt_repository:
+    repo: deb https://dl.yarnpkg.com/debian/ stable main
+    update_cache: yes
+- name: Install yarn
+  become: yes
+  apt:
+    name: yarn
+    force: yes
+    update_cache: yes
+    cache_valid_time: 86400

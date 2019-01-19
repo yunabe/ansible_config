@@ -72,7 +72,7 @@
 
 - name: Clone jekylldoc git repository
   git:
-    repo: git@bitbucket.org:yunabe/sphinx-doc.git
+    repo: git@github.com:yunabe/www.yunabe.jp.src.git
     dest: /home/{{ user }}/src/jekylldoc
     accept_hostkey: yes
   tags:

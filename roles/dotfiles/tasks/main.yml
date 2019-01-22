@@ -48,13 +48,19 @@
 - name: Link .npmrc file
   file:
     path: "~/.npmrc"
-    src: "~/config/_npmrc"
+    src: "config/_npmrc"
     state: link
+
+- name: Create .emacs.d directory
+  file:
+    path: ~/.emacs.d
+    state: directory
+    mode: 0700
 
 - name: Link Cask file
   file:
     path: "~/.emacs.d/Cask"
-    src: "../config/Cask"
+    src: "~/config/Cask"
     state: link
 
 - name: Clone Cask repository

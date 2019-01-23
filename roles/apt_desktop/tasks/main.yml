@@ -21,10 +21,7 @@
 - name: Install Chrome, VSCode
   become: yes
   apt:
-    name: "{{ item }}"
+    name: ['code', 'google-chrome-stable']
     force: yes
     update_cache: yes
     cache_valid_time: 3600
-  with_items:
-    - code
-    - google-chrome-stable

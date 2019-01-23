@@ -1,31 +1,13 @@
 - name: Install apt packages
   become: yes
   apt:
-    name: "{{ item }}"
+    # * apptitude is required to execute apt: upgrade later.
+    #   https://github.com/ansible/ansible/issues/16884#issuecomment-278138707
+    # * ruby-dev is required to install jekyll.
+    name: ['aptitude', 'clang', 'curl', 'emacs', 'gcc', 'git', 'llvm-dev', 'maven', 'mercurial', 'python-pip', 'screen', 'subversion', 'unzip', 'zip', 'zsh', 'libzmq3-dev', 'ruby-dev']
     force: yes
     update_cache: yes
     cache_valid_time: 86400
-  with_items:
-    # apptitude is required to execute apt: upgrade later.
-    # https://github.com/ansible/ansible/issues/16884#issuecomment-278138707
-    - aptitude
-    - clang
-    - curl
-    - emacs
-    - gcc
-    - git
-    - llvm-dev
-    - maven
-    - mercurial
-    - python-pip
-    - screen
-    - subversion
-    - unzip
-    - zip
-    - zsh
-    - libzmq3-dev
-    # ruby-dev is required to install jekyll.
-    - ruby-dev
 
 - name: Update all packages to the latest version
   apt: update_cache=yes cache_valid_time=86400 upgrade=safe

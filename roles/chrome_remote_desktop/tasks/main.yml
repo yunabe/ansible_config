@@ -1,14 +1,10 @@
 - name: Install necessary packages
   become: yes
   apt:
-    name: "{{ item }}"
+    name: ['cinnamon-desktop-environment', 'gdebi-core', 'dbus-x11']
     force: yes
     update_cache: yes
     cache_valid_time: 86400
-  with_items:
-    - cinnamon-desktop-environment
-    - gdebi-core
-    - dbus-x11
 
 - name: Create chrome-remote-desktop group
   become: yes

@@ -4,10 +4,11 @@
   become: yes
   pip: name=pip state=latest
 
+# Install other Python libraries as user.
 - name: Install Python popular ML libraries.
-  become: yes
   pip:
     state: latest
+    extra_args: --user
     name:
     - jupyter
     - jupyterlab

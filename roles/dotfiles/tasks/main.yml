@@ -60,7 +60,7 @@
 - name: Link Cask file
   file:
     path: "~/.emacs.d/Cask"
-    src: "~/config/Cask"
+    src: "../config/Cask"
     state: link
 
 - name: Clone Cask repository

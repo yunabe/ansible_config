@@ -23,3 +23,4 @@
     # cookiecutter is installed for https://jupyterlab.readthedocs.io/en/stable/developer/xkcd_extension_tutorial.html#xkcd-extension-tutorial
     - cookiecutter
     - passlib
+    - virtualenv

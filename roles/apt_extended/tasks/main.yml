@@ -97,3 +97,22 @@
     force: yes
     update_cache: yes
     cache_valid_time: 86400
+
+# Install bazel
+# https://docs.bazel.build/versions/master/install-ubuntu.html#install-on-ubuntu
+- name: Install Bazel APT Key
+  become: yes
+  apt_key:
+    url: "https://bazel.build/bazel-release.pub.gpg"
+- name: Register Bazel apt-repository
+  become: yes
+  apt_repository:
+    repo: deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8
+    update_cache: yes
+- name: Install Bazel
+  become: yes
+  apt:
+    name: bazel
+    force: yes
+    update_cache: yes
+    cache_valid_time: 3600

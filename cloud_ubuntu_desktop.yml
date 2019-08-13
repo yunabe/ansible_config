@@ -1,9 +1,20 @@
 ---
+
+# Install /bin/python to avoid "/usr/bin/python: not found" error.
+# https://stackoverflow.com/a/41431540/4388164
+- hosts: all
+  gather_facts: no
+  become: yes
+  tasks:
+  - name: Install python
+    raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+    register: output
+    changed_when: output.stdout != ""
+
 - hosts: all
   vars:
     user: yunabe
   tasks:
-
   # By default, vars/passwd_secret.yml does not exist and vars/passwd_default.yml
   # set '*' to /etc/shadow and disable password-login.
   # To enable password, create vars/passwd_secret.yml and provide a hashed password.

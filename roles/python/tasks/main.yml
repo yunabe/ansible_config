@@ -2,13 +2,14 @@
 # pip installed with apt-get is not up-to-date.
 - name: Install up-to-date pip
   become: yes
-  pip: name=pip state=latest
+  pip: executable=pip3 name=pip state=latest
 
 # Install other Python libraries as user.
 - name: Install Python popular ML libraries.
   pip:
     state: latest
     extra_args: --user
+    executable: pip3
     name:
     - jupyter
     - jupyterlab
@@ -22,3 +23,4 @@
     # cookiecutter is installed for https://jupyterlab.readthedocs.io/en/stable/developer/xkcd_extension_tutorial.html#xkcd-extension-tutorial
     - cookiecutter
     - passlib
+    - virtualenv

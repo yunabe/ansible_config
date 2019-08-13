@@ -19,7 +19,7 @@ ansible-playbook cloud_ubuntu_desktop.yml -i 110.111.112.113,
 
 ## Chromebook (crouton)
 ```shell
-ansible-playbook -i localhost playbook.yml -K -c local
+ansible-playbook -i localhost crouton.yml -K -c local
 ```
 
 # Not covered with these public Ansibe playbooks

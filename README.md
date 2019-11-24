@@ -13,6 +13,7 @@ Notes:
   Then, pass the file with `-i` flag.
 
 ## Ubuntu instances on AWS/GCE
+
 ```shell
 ansible-playbook cloud_ubuntu_desktop.yml -i 110.111.112.113,
 ```

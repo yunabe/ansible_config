@@ -85,3 +85,19 @@
     accept_hostkey: yes
   tags:
     - git
+
+- name: Clone tslab git repository
+  git:
+    repo: git@github.com:yunabe/tslab.git
+    dest: /home/{{ user }}/src/tslab
+    accept_hostkey: yes
+  tags:
+    - git
+
+- name: Clone tslab-examples git repository
+  git:
+    repo: git@github.com:yunabe/tslab-examples.git
+    dest: /home/{{ user }}/src/tslab-examples
+    accept_hostkey: yes
+  tags:
+    - git

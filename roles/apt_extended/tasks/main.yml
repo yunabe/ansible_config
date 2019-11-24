@@ -2,12 +2,12 @@
 # https://github.com/golang/go/wiki/Ubuntu
 - name: Register Go apt-repository
   apt_repository:
-    repo: ppa:gophers/archive
+    repo: ppa:longsleep/golang-backports
     update_cache: yes
   become: yes
-- name: Install Go 1.9
+- name: Install Go
   apt:
-    name: golang-1.9-go
+    name: golang-go
     force: yes
     update_cache: yes
     cache_valid_time: 86400
@@ -29,6 +29,7 @@
   become: yes
   apt:
     name: docker-ce
+    name: ['docker-ce', 'docker-ce-cli', 'containerd.io']
     force: yes
     update_cache: yes
     cache_valid_time: 3600
@@ -47,28 +48,28 @@
   apt_key:
     url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
     id: 68576280
-# TODO(yunabe): Remove these two rules once node_9.x are moreved from all envs.
-- name: Remove node_9.x apt-repository
+# TODO(yunabe): Remove these two rules once node_11.x are removed from all environments.
+- name: Remove node_11.x apt-repository
   become: yes
   apt_repository:
-    repo: deb https://deb.nodesource.com/node_9.x {{ansible_lsb.codename}} main
+    repo: deb https://deb.nodesource.com/node_11.x {{ansible_lsb.codename}} main
     update_cache: yes
     state: absent
-- name: Remove node_9.x NodeSource deb-src apt-repository
+- name: Remove node_11.x NodeSource deb-src apt-repository
   become: yes
   apt_repository:
-    repo: deb-src https://deb.nodesource.com/node_9.x {{ansible_lsb.codename}} main
+    repo: deb-src https://deb.nodesource.com/node_11.x {{ansible_lsb.codename}} main
     update_cache: yes
     state: absent
 - name: Register NodeSource apt-repository
   become: yes
   apt_repository:
-    repo: deb https://deb.nodesource.com/node_11.x {{ansible_lsb.codename}} main
+    repo: deb https://deb.nodesource.com/node_13.x {{ansible_lsb.codename}} main
     update_cache: yes
 - name: Register NodeSource deb-src apt-repository
   become: yes
   apt_repository:
-    repo: deb-src https://deb.nodesource.com/node_11.x {{ansible_lsb.codename}} main
+    repo: deb-src https://deb.nodesource.com/node_13.x {{ansible_lsb.codename}} main
     update_cache: yes
 - name: Install the latest Node.js
   become: yes

@@ -48,28 +48,28 @@
   apt_key:
     url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
     id: 68576280
-# TODO(yunabe): Remove these two rules once node_11.x are removed from all environments.
-- name: Remove node_11.x apt-repository
+# TODO(yunabe): Remove these two rules once node_13.x are removed from all environments.
+- name: Remove node_13.x apt-repository
   become: yes
   apt_repository:
-    repo: deb https://deb.nodesource.com/node_11.x {{ansible_lsb.codename}} main
+    repo: deb https://deb.nodesource.com/node_13.x {{ansible_lsb.codename}} main
     update_cache: yes
     state: absent
-- name: Remove node_11.x NodeSource deb-src apt-repository
+- name: Remove node_13.x NodeSource deb-src apt-repository
   become: yes
   apt_repository:
-    repo: deb-src https://deb.nodesource.com/node_11.x {{ansible_lsb.codename}} main
+    repo: deb-src https://deb.nodesource.com/node_13.x {{ansible_lsb.codename}} main
     update_cache: yes
     state: absent
 - name: Register NodeSource apt-repository
   become: yes
   apt_repository:
-    repo: deb https://deb.nodesource.com/node_13.x {{ansible_lsb.codename}} main
+    repo: deb https://deb.nodesource.com/node_16.x {{ansible_lsb.codename}} main
     update_cache: yes
 - name: Register NodeSource deb-src apt-repository
   become: yes
   apt_repository:
-    repo: deb-src https://deb.nodesource.com/node_13.x {{ansible_lsb.codename}} main
+    repo: deb-src https://deb.nodesource.com/node_16.x {{ansible_lsb.codename}} main
     update_cache: yes
 - name: Install the latest Node.js
   become: yes

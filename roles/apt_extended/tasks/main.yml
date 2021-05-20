@@ -116,4 +116,24 @@
     name: bazel
     force: yes
     update_cache: yes
-    cache_valid_time: 3600
+    cache_valid_time: 86400
+
+# Install Google Cloud SDK
+# https://cloud.google.com/sdk/docs/install?hl=en#deb
+- name: Install Cloud SDK GPG key
+  become: yes
+  apt_key:
+    url: "https://packages.cloud.google.com/apt/doc/apt-key.gpg"
+- name: Register Cloud SDK apt-repository
+  become: yes
+  apt_repository:
+    repo: deb http://packages.cloud.google.com/apt cloud-sdk main
+    update_cache: yes
+- name: Install Google Cloud SDK
+  become: yes
+  apt:
+    name: 'google-cloud-sdk'
+    name: "{{ item }}"
+    force: yes
+    update_cache: yes
+    cache_valid_time: 86400

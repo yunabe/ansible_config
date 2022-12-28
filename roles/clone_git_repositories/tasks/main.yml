@@ -78,14 +78,6 @@
   tags:
     - git
 
-- name: Clone plain git repository
-  git:
-    repo: git@bitbucket.org:yunabe/plain.git
-    dest: /home/{{ user }}/src/plain
-    accept_hostkey: yes
-  tags:
-    - git
-
 - name: Clone tslab git repository
   git:
     repo: git@github.com:yunabe/tslab.git

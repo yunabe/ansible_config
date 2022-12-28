@@ -12,35 +12,6 @@
     update_cache: yes
     cache_valid_time: 86400
   become: yes
-
-# Install the latest version of docker on ubuntu.
-# https://docs.docker.com/engine/installation/linux/ubuntu/
-- name: Install Docker GPG key
-  become: yes
-  apt_key:
-    url: "https://download.docker.com/linux/ubuntu/gpg"
-    id: 0EBFCD88
-- name: Register docker apt-repository
-  become: yes
-  apt_repository:
-    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable
-    update_cache: yes
-- name: Install docker-ce
-  become: yes
-  apt:
-    name: docker-ce
-    name: ['docker-ce', 'docker-ce-cli', 'containerd.io']
-    force: yes
-    update_cache: yes
-    cache_valid_time: 3600
-- name: Add {{ user }} to docker group
-  become: yes
-  user:
-    name: "{{ user }}"
-    shell: /bin/zsh
-    append: yes
-    groups: docker
-
 # Install the latest Node.js
 # https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
 - name: Install NodeSource GPG key
@@ -81,23 +52,23 @@
 
 # Install the latest yarn
 # https://yarnpkg.com/en/docs/install#debian-stable
-- name: Install Yarn GPG key
-  become: yes
-  apt_key:
-    url: "https://dl.yarnpkg.com/debian/pubkey.gpg"
-    id: 86E50310
-- name: Register yarn apt-repository
-  become: yes
-  apt_repository:
-    repo: deb https://dl.yarnpkg.com/debian/ stable main
-    update_cache: yes
-- name: Install yarn
-  become: yes
-  apt:
-    name: yarn
-    force: yes
-    update_cache: yes
-    cache_valid_time: 86400
+# - name: Install Yarn GPG key
+#   become: yes
+#   apt_key:
+#     url: "https://dl.yarnpkg.com/debian/pubkey.gpg"
+#     id: 86E50310
+# - name: Register yarn apt-repository
+#   become: yes
+#   apt_repository:
+#     repo: deb https://dl.yarnpkg.com/debian/ stable main
+#     update_cache: yes
+# - name: Install yarn
+#   become: yes
+#   apt:
+#     name: yarn
+#     force: yes
+#     update_cache: yes
+#     cache_valid_time: 86400
 
 # Install bazel
 # https://docs.bazel.build/versions/master/install-ubuntu.html#install-on-ubuntu

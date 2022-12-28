@@ -6,7 +6,7 @@
     # * ruby-dev is required to install jekyll.
     # * python-setuptools is necessary to use Ansible pip rules.
     #   https://stackoverflow.com/questions/52901272/
-    name: ['aptitude', 'clang', 'curl', 'emacs', 'gcc', 'git', 'llvm-dev', 'maven', 'mercurial', 'python3', 'python3-pip', 'screen', 'subversion', 'unzip', 'zip', 'zsh', 'libzmq3-dev', 'ruby-dev', 'default-jdk', 'python-setuptools']
+    name: ['aptitude', build-essential, 'clang', 'curl', 'emacs', 'git', 'llvm-dev', 'mercurial', 'net-tools', 'python3', 'python3-pip', 'screen', 'unzip', 'zip', 'zsh', 'default-jdk', 'dotnet-sdk-6.0']
     force: yes
     update_cache: yes
     cache_valid_time: 86400

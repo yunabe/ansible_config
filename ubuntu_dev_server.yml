@@ -1,0 +1,10 @@
+---
+
+- hosts: all
+  vars:
+    user: yunabe
+  roles:
+    - apt_common
+    - copy_sshkeys
+    - dotfiles
+    - clone_git_repositories

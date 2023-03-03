@@ -7,4 +7,6 @@
     - apt_common
     - copy_sshkeys
     - dotfiles
+    - python
+    - nodejs
     - clone_git_repositories

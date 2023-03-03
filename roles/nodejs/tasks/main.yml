@@ -1,0 +1,37 @@
+# Install the latest Node.js
+# https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
+- name: Install NodeSource GPG key
+  become: yes
+  apt_key:
+    url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+    id: 68576280
+# TODO(yunabe): Remove these two rules once node_18.x are removed from all environments.
+- name: Remove node_18.x apt-repository
+  become: yes
+  apt_repository:
+    repo: deb https://deb.nodesource.com/node_18.x {{ansible_lsb.codename}} main
+    update_cache: yes
+    state: absent
+- name: Remove node_18.x NodeSource deb-src apt-repository
+  become: yes
+  apt_repository:
+    repo: deb-src https://deb.nodesource.com/node_18.x {{ansible_lsb.codename}} main
+    update_cache: yes
+    state: absent
+- name: Register NodeSource apt-repository
+  become: yes
+  apt_repository:
+    repo: deb https://deb.nodesource.com/node_19.x {{ansible_lsb.codename}} main
+    update_cache: yes
+- name: Register NodeSource deb-src apt-repository
+  become: yes
+  apt_repository:
+    repo: deb-src https://deb.nodesource.com/node_19.x {{ansible_lsb.codename}} main
+    update_cache: yes
+- name: Install the latest Node.js
+  become: yes
+  apt:
+    name: nodejs
+    force: yes
+    update_cache: yes
+    cache_valid_time: 86400
